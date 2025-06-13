@@ -57,26 +57,25 @@ fs.mkdir(filesDir, { recursive: true }, () => {
 app.get('/', (req, res) => {
     const filesDir = path.join(__dirname, 'files');
 
-    // Ensure the "files" folder exists before reading it
-    fs.mkdir(filesDir, { recursive: true }, (err) => {
-        if (err) {
-            console.error('Failed to create directory:', err);
+    // Create the directory if it doesn't exist
+    fs.mkdir(filesDir, { recursive: true }, (mkdirErr) => {
+        if (mkdirErr) {
+            console.error("Directory creation error:", mkdirErr);
             return res.render('index2.ejs', { files: [] });
         }
 
-        // Read the directory *inside* the mkdir callback
-        fs.readdir(filesDir, (err, files) => {
-            if (err || !files) {
-                console.error('Failed to read files:', err);
+        // Now safely read the directory
+        fs.readdir(filesDir, (readErr, files) => {
+            if (readErr) {
+                console.error("Directory read error:", readErr);
                 return res.render('index2.ejs', { files: [] });
             }
 
-            // ✅ This res.render is now inside the correct scope
+            // ✅ Successfully render files list
             res.render('index2.ejs', { files: files });
         });
     });
 });
-
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
