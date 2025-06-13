@@ -64,12 +64,14 @@ app.get('/', (req, res) => {
             return res.render('index2.ejs', { files: [] });
         }
 
+        // Read the directory *inside* the mkdir callback
         fs.readdir(filesDir, (err, files) => {
-            if (err) {
-                console.error('Failed to read directory:', err);
+            if (err || !files) {
+                console.error('Failed to read files:', err);
                 return res.render('index2.ejs', { files: [] });
             }
 
+            // ✅ This res.render is now inside the correct scope
             res.render('index2.ejs', { files: files });
         });
     });
