@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body>
+    <div class="main w-full min-h-screen bg-zinc-900"><!--this will give black clolor to complete screen -->
+        <div class="form p-10">
+            <form action="/create" method="POST" ><!--this says send the data to the create route when user clicks suubmit button-->
+                <input class="block w-full text-white  px-5 py-2 bg-zinc-800" type="text" placeholder="Title goes here" name="title" >
+                <textarea class="block w-full mt-2 text-white px-5 py-2 resize-none bg-zinc-800" placeholder="Write your task details here " name="details" ></textarea>
+                <button class="bg-blue-500 text-white px-4 py-2 mt-2 rounded">Create Task</button>
+            </form>
+        </div>
+
+
+        <div class="tasks min-h-screen flex items-center justify-center bg-zinc-900">
+              <% if (files.length > 0) { %>
+                <% files.forEach(function(val) { %>
+                    <div class="bg-zinc-800 text-white rounded-2xl shadow-lg p-6 w-64 m-2">
+                        <h2 class="text-xl font-semibold mb-2"><%= val %></h2>
+                        <a href="/files/<%= val %>" class="text-blue-400 text-sm mt-2 inline-block">Read more...</a>
+                    </div>  <!--jaise hi hum read more par click karenge hamara browser hame /files/'filename' route par le gayega-->
+                            <!--phir hum backend(specifically post function ka) ka istemal karenge aur backend ko batayeinga(ya bhejenge) ki -->
+                <% }) %>    <!--ki wala route aa chuka hai ab is route ke corresponding callback function call karo-->
+              <% } else { %>
+                <h3 class="text-red-50">No Tasks Yet...</h3>
+              <% } %>
+
+
+            
+          
+            
+          
+            </div>
+        </div>
+    
+</body>
+</html>
