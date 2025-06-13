@@ -54,19 +54,26 @@ fs.mkdir(filesDir, { recursive: true }, () => {
 // this code will work when we click read more..
 // this code is to read description data from file and render it in the index3.ejs file and index3.ejs file will display the description 
 // of the file in the browser in the another route
-app.get('/files/:filename', (req, res) => {
-    fs.readFile(`./files/${req.params.filename}`, 'utf8', (err, data) => { //params is used to get the value from the url
+app.get('/', (req, res) => {
+    const filesDir = path.join(__dirname, 'files');
+
+    // Ensure the "files" folder exists before reading it
+    fs.mkdir(filesDir, { recursive: true }, (err) => {
         if (err) {
-            return res.status(404).send('File not found');
+            console.error('Failed to create directory:', err);
+            return res.render('index2.ejs', { files: [] });
         }
-        res.render('index3.ejs', { title: req.params.filename, description: data });// this says ki hamne 
-        // index3.ejs file mein title aur description variable pass kiya hai
-        // tile variable contains the name of the file and description variable contains the content of the file
-        // you need to follow this format whike rendering the ejs file
+
+        fs.readdir(filesDir, (err, files) => {
+            if (err) {
+                console.error('Failed to read directory:', err);
+                return res.render('index2.ejs', { files: [] });
+            }
+
+            res.render('index2.ejs', { files: files });
+        });
     });
 });
-
-
 
 
 const PORT = process.env.PORT || 3000;
