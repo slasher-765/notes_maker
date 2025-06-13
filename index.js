@@ -26,15 +26,28 @@ app.post('/create', (req, res) => {
 
 
 
-// this code is to read data from file and render it in the index2.ejs file and index2.ejs file will display the files in the browser
-app.get('/', (req, res) => {
-    fs.readdir('./files', (err, files) => { // we are reading the files from the files directory IF yes we will render index.ejs
-        res.render('index2.ejs',{files: files});// first one is name of variable in ejs file, second one is the value that we are passing
-    })  // in the index.ejs we are sending files variable which contains the files in the files directory
+// // this code is to read data from file and render it in the index2.ejs file and index2.ejs file will display the files in the browser
+// app.get('/', (req, res) => {
+//     fs.readdir('./files', (err, files) => { // we are reading the files from the files directory IF yes we will render index.ejs
+//         res.render('index2.ejs',{files: files});// first one is name of variable in ejs file, second one is the value that we are passing
+//     })  // in the index.ejs we are sending files variable which contains the files in the files directory
+// });
+// // this code or get function says whenever user goes to / route in browser then call the function or here in this code read the files from directory and render the index2.ejs file with the files array
+// // basically get is used to read data from the server
+// // post is used to send data to the server
+
+
+const filesDir = path.join(__dirname, 'files');
+
+fs.mkdir(filesDir, { recursive: true }, () => {
+    fs.readdir(filesDir, (err, files) => {
+        if (err || !files) {
+            return res.render('index2.ejs', { files: [] });
+        }
+        res.render('index2.ejs', { files: files });
+    });
 });
-// this code or get function says whenever user goes to / route in browser then call the function or here in this code read the files from directory and render the index2.ejs file with the files array
-// basically get is used to read data from the server
-// post is used to send data to the server
+
 
 
 
